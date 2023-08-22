@@ -359,12 +359,17 @@ if st.session_state['user_input_content'] != '':
             # 注：当st.secrets中配置apikey后将会留存聊天记录，即使未使用此apikey
             else:
                 openai.api_key = st.secrets["apikey"]
-
-                #xxx
-            
-            r = openai.ChatCompletion.create(model=st.session_state["select_model"], messages=history_need_input,
+            # r = openai.ChatCompletion.create(model=st.session_state["select_model"], messages=history_need_input,
+            #                                 stream=True,
+            #                                 **paras_need_input)
+            openai.api_type = "azure"
+            openai.api_base = "https://za-gpt4-test.openai.azure.com/"
+            openai.api_version = "2023-03-15-preview"
+            openai.api_key = "98e883429105490cab147fe9e7116c7e"
+            r = openai.ChatCompletion.create(engine="oegpt4", messages=history_need_input,
                                              stream=True,
                                              **paras_need_input)
+                                          
         except (FileNotFoundError, KeyError):
             area_error.error("缺失 OpenAI API Key，请在复制项目后配置Secrets，或者在模型选项中进行临时配置。"
                              "详情见[项目仓库](https://github.com/PierXuY/ChatGPT-Assistant)。")
